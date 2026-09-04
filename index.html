@@ -6,7 +6,7 @@
     <title>Save The Date</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #1b1517;
@@ -196,55 +196,103 @@
             margin-top: 1px;
         }
 
-        /* EINKLAPPBARE NEUIGKEITEN */
+        /* EINKLAPPBARE NEUIGKEITEN (AUFFÄLLIGES DESIGN) */
         .accordion-box {
             border-top: 1px dashed var(--line-color);
             margin-top: 0.8rem;
-            padding-top: 0.6rem;
+            padding-top: 0.8rem;
             text-align: center;
         }
 
         details {
             cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--rosegold-main);
+            background: rgba(15, 10, 12, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            border-color: var(--rosegold-light);
+            background: rgba(15, 10, 12, 0.65);
         }
 
         summary {
             font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            color: var(--rosegold-main);
-            letter-spacing: 0.1em;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #1b1517;
+            background: var(--rosegold-gradient);
+            padding: 10px 14px;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
             list-style: none;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            justify-content: space-between;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: pulse-rosegold 3s infinite;
         }
 
         summary::-webkit-details-marker {
             display: none;
         }
 
-        summary::after {
-            content: '▾';
-            font-size: 0.75rem;
-            transition: transform 0.2s ease;
+        .summary-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        details[open] summary::after {
+        .badge-new {
+            background-color: #1b1517;
+            color: var(--rosegold-light);
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .arrow-badge {
+            background: rgba(27, 21, 23, 0.25);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            transition: transform 0.3s ease;
+            color: #1b1517;
+        }
+
+        details[open] summary {
+            animation: none;
+        }
+
+        details[open] summary .arrow-badge {
             transform: rotate(180deg);
         }
 
         .info-text {
             font-size: 0.8rem;
             color: var(--text-muted);
-            margin-top: 0.5rem;
+            padding: 12px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-            line-height: 1.3;
+            line-height: 1.4;
+            text-align: left;
         }
 
-        /* FOTOALBUM (SCHALTET AM 15.09.2028 UM 00:00 UHR FREI) */
+        @keyframes pulse-rosegold {
+            0% { box-shadow: 0 0 0 0 rgba(224, 170, 158, 0.5); }
+            70% { box-shadow: 0 0 0 8px rgba(224, 170, 158, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(224, 170, 158, 0); }
+        }
+
+        /* FOTOALBUM (SCHALTET AM 15.09.2028 UM 11:00 UHR FREI) */
         #albumSection {
             display: none;
             border-top: 1px dashed var(--line-color);
@@ -344,12 +392,17 @@
         <!-- EINKLAPPBARE NEUIGKEITEN -->
         <div class="accordion-box">
             <details>
-                <summary>Neuigkeiten</summary>
+                <summary>
+                    <span class="summary-title">
+                        📢 Neuigkeiten <span class="badge-new">NEU</span>
+                    </span>
+                    <span class="arrow-badge">▼</span>
+                </summary>
                 <p class="info-text">Haltet euch den Tag frei! Weitere Details und Informationen folgen in Kürze.</p>
             </details>
         </div>
 
-        <!-- HOCHZEITSFOTOS: FREISCHALTUNG AM 15.09.2028 UM 00:00 UHR -->
+        <!-- HOCHZEITSFOTOS: FREISCHALTUNG AM 15.09.2028 UM 11:00 UHR -->
         <div id="albumSection">
             <h2 style="font-size: 0.8rem; color: var(--rosegold-main); text-transform: uppercase; letter-spacing: 0.1em;">Hochzeitsfotos</h2>
             <p class="info-text">Teilt eure schönsten Schnappschüsse direkt im Album!</p>
@@ -362,14 +415,14 @@
     </div>
 
     <script>
-        // 1. COUNTDOWN ZUM 15.09.2028
-        const targetDate = new Date('2028-09-15T00:00:00').getTime();
+        // 1. COUNTDOWN ZUM 15.09.2028 UM 11:00 UHR
+        const targetDate = new Date('2028-09-15T11:00:00').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = targetDate - now;
 
-            if (diff < 0) {
+            if (diff <= 0) {
                 document.querySelector('.timer').innerHTML = "<h2 style='grid-column: span 4;'>Der große Tag ist da! 🎉</h2>";
                 return;
             }
@@ -383,8 +436,8 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // 2. FREISCHALTUNG AM 15.09.2028 UM 00:00 UHR
-        const albumUnlockDate = new Date('2028-09-15T00:00:00').getTime();
+        // 2. FREISCHALTUNG AM 15.09.2028 UM 11:00 UHR
+        const albumUnlockDate = new Date('2028-09-15T11:00:00').getTime();
         const now = new Date().getTime();
 
         if (now >= albumUnlockDate) {
