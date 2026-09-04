@@ -231,28 +231,69 @@
         details[open] summary { animation: none; }
 
         .news-container {
-            padding: 12px;
+            padding: 14px;
             text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .news-item {
             font-size: 0.82rem;
             color: var(--text-muted);
             line-height: 1.4;
+            border-bottom: 1px dashed var(--line-color);
+            padding-bottom: 10px;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
         }
 
         .news-item strong {
             color: var(--rosegold-light);
         }
 
-        /* BUTTONS */
-        .button-group {
+        /* ABLAUFPLAN / TIMELINE */
+        .timeline {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-bottom: 1rem;
+            margin-top: 4px;
         }
 
+        .timeline-event {
+            background: rgba(12, 8, 10, 0.45);
+            border-left: 3px solid var(--rosegold-main);
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
+            border-top: 1px solid var(--line-color);
+            border-right: 1px solid var(--line-color);
+            border-bottom: 1px solid var(--line-color);
+        }
+
+        .event-time {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--rosegold-light);
+            margin-bottom: 2px;
+        }
+
+        .event-title {
+            font-weight: 500;
+            font-size: 0.88rem;
+            color: var(--text-light);
+        }
+
+        .event-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* BUTTONS */
         .btn-action {
             display: inline-flex;
             align-items: center;
@@ -263,7 +304,7 @@
             font-size: 0.82rem;
             font-weight: 500;
             padding: 10px 14px;
-            border-radius: 14px;
+            border-radius: 12px;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -273,50 +314,12 @@
             background: rgba(224, 170, 158, 0.15);
             border: 1px solid var(--rosegold-main);
             color: var(--rosegold-light);
+            margin-top: 4px;
         }
 
         .btn-cal:hover {
             background: var(--rosegold-gradient);
             color: #1b1517;
-        }
-
-        /* ABLAUFPLAN / TIMELINE */
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 1rem 0;
-            text-align: left;
-        }
-
-        .timeline-event {
-            background: rgba(12, 8, 10, 0.45);
-            border-left: 3px solid var(--rosegold-main);
-            padding: 10px 14px;
-            border-radius: 0 10px 10px 0;
-            border-top: 1px solid var(--line-color);
-            border-right: 1px solid var(--line-color);
-            border-bottom: 1px solid var(--line-color);
-        }
-
-        .event-time {
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--rosegold-light);
-            margin-bottom: 2px;
-        }
-
-        .event-title {
-            font-weight: 500;
-            font-size: 0.95rem;
-            color: var(--text-light);
-        }
-
-        .event-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 2px;
         }
 
         /* AUSKLAPPBARES RSVP FORMULAR */
@@ -444,7 +447,7 @@
             <div class="divider-line"></div>
         </div>
 
-        <!-- 1. NEUIGKEITEN BUTTON (Ganz oben fixiert) -->
+        <!-- NEUIGKEITEN BUTTON (Enthält Ablauf, Kalender & Info zur Website) -->
         <div class="accordion-box">
             <details class="news-details">
                 <summary class="news-summary">
@@ -454,38 +457,46 @@
                     <span class="arrow-badge">▼</span>
                 </summary>
                 <div class="news-container">
+                    
+                    <!-- 1. Hinweis zur Website -->
                     <div class="news-item">
                         🌐 <strong>Informationen rund um die Hochzeit:</strong><br>
                         Alle weiteren Details zum Ablauf, Anfahrt, Übernachtungsmöglichkeiten sowie kurzfristige Neuigkeiten findet ihr jederzeit direkt hier auf unserer Website.
                     </div>
+
+                    <!-- 2. Ablaufplan -->
+                    <div class="news-item">
+                        📌 <strong>Vorläufiger Ablauf:</strong>
+                        <div class="timeline">
+                            <div class="timeline-event">
+                                <div class="event-time">11:00 Uhr — Standesamt</div>
+                                <div class="event-title">Feierliche Trauung</div>
+                                <div class="event-desc">Wir geben uns das Ja-Wort im Standesamt.</div>
+                            </div>
+
+                            <div class="timeline-event">
+                                <div class="event-time">17:00 Uhr — Hochzeitsfeier</div>
+                                <div class="event-title">Steinbergs Wildewiese</div>
+                                <div class="event-desc">
+                                    Gemeinsames Feiern, Essen & Tanzen.<br>
+                                    <a href="https://maps.google.com/?q=Wildewiese+1,+59846+Sundern" target="_blank" class="location-link">📍 Wildewiese 1, 59846 Sundern</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Kalender eintragen -->
+                    <div class="news-item">
+                        📅 <strong>Termin sichern:</strong><br>
+                        Speichert euch unseren großen Tag direkt in euren Smartphone-Kalender:
+                        <button onclick="downloadICS()" class="btn-action btn-cal">📅 Datum im Kalender speichern</button>
+                    </div>
+
                 </div>
             </details>
         </div>
 
-        <!-- 2. ABLAUFPLAN -->
-        <div class="timeline">
-            <div class="timeline-event">
-                <div class="event-time">11:00 Uhr — Standesamt</div>
-                <div class="event-title">Feierliche Trauung</div>
-                <div class="event-desc">Wir geben uns das Ja-Wort im Standesamt.</div>
-            </div>
-
-            <div class="timeline-event">
-                <div class="event-time">17:00 Uhr — Hochzeitsfeier</div>
-                <div class="event-title">Steinbergs Wildewiese</div>
-                <div class="event-desc">
-                    Gemeinsames Feiern, Essen & Tanzen.<br>
-                    <a href="https://maps.google.com/?q=Wildewiese+1,+59846+Sundern" target="_blank" class="location-link">📍 Wildewiese 1, 59846 Sundern</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. KALENDER-BUTTON -->
-        <div class="button-group">
-            <button onclick="downloadICS()" class="btn-action btn-cal">📅 Datum im Kalender speichern</button>
-        </div>
-
-        <!-- 4. EINKLAPPBARES FORMULAR (RSVP) -->
+        <!-- EINKLAPPBARES FORMULAR (RSVP) -->
         <details class="rsvp-details">
             <summary class="rsvp-summary">
                 <span>✉️ Rückmeldung geben</span>
