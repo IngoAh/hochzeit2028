@@ -10,7 +10,7 @@
     <style>
         :root {
             --bg-dark: #1b1517;
-            --paper-rustic: rgba(25, 18, 20, 0.65);
+            --paper-rustic: rgba(25, 18, 20, 0.72);
             --card-border: rgba(224, 170, 158, 0.35);
             
             --rosegold-light: #f7d5cc;
@@ -42,14 +42,15 @@
             font-weight: 300;
             display: flex;
             justify-content: center;
-            align-items: center;
+            /* Karte unten verankern, damit die Bilder oben frei sichtbar bleiben */
+            align-items: flex-end; 
             min-height: 100vh;
             min-height: 100dvh;
-            padding: 30px 15px;
+            padding: 15px 12px 25px 12px;
             position: relative;
         }
 
-        /* HINTERGRUND-SLIDER */
+        /* SMARTPHONE-OPTIMIERTER HINTERGRUND-SLIDER */
         .slider-wrapper {
             position: fixed;
             top: 0;
@@ -67,6 +68,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            /* Sorgt auf allen Smartphones für perfekte Darstellung ohne Verzerrung */
             object-fit: cover;
             object-position: center center;
             opacity: 0;
@@ -78,6 +80,7 @@
             opacity: 1;
         }
 
+        /* Sanfter Verlauf nach unten, damit der Kasten perfekt lesbar ist */
         .bg-overlay {
             position: fixed;
             top: 0;
@@ -86,25 +89,28 @@
             height: 100vh;
             height: 100dvh;
             z-index: 2;
-            background: linear-gradient(to bottom, rgba(15, 10, 12, 0.25), rgba(15, 10, 12, 0.65));
+            background: linear-gradient(to bottom, rgba(15, 10, 12, 0.1) 0%, rgba(15, 10, 12, 0.4) 50%, rgba(15, 10, 12, 0.85) 100%);
             pointer-events: none;
         }
 
-        /* EINLADUNGSKARTE */
+        /* EINLADUNGSKARTE (UNTEIN PLATZIERT) */
         .card-container {
             max-width: 420px;
             width: 100%;
             background: var(--paper-rustic);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--card-border);
             border-radius: 20px;
-            padding: 28px 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px rgba(224, 170, 158, 0.1);
+            padding: 22px 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(224, 170, 158, 0.1);
             text-align: center;
             position: relative;
             z-index: 10;
-            margin: auto;
+            margin: 0 auto;
+            max-height: 85vh;
+            max-height: 85dvh;
+            overflow-y: auto;
         }
 
         .card-container::before {
@@ -120,7 +126,7 @@
 
         h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 5.5vw, 2.3rem);
+            font-size: clamp(1.6rem, 5vw, 2.1rem);
             font-weight: 600;
             background: var(--rosegold-gradient);
             -webkit-background-clip: text;
@@ -132,9 +138,9 @@
         .sub-heading {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: var(--text-light);
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
@@ -143,7 +149,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin: 0 auto 1rem;
+            margin: 0 auto 0.8rem;
             width: 50%;
         }
 
@@ -160,7 +166,7 @@
 
         /* EINKLAPPBARE NEUIGKEITEN */
         .accordion-box {
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             text-align: center;
         }
 
@@ -175,7 +181,7 @@
 
         details.news-details[open] {
             border-color: var(--rosegold-light);
-            background: rgba(15, 10, 12, 0.65);
+            background: rgba(15, 10, 12, 0.75);
         }
 
         summary.news-summary {
@@ -231,19 +237,19 @@
         details[open] summary { animation: none; }
 
         .news-container {
-            padding: 14px;
+            padding: 12px;
             text-align: left;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .news-item {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             line-height: 1.4;
             border-bottom: 1px dashed var(--line-color);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
         .news-item:last-child {
@@ -260,13 +266,13 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .timeline-event {
-            background: rgba(12, 8, 10, 0.45);
+            background: rgba(12, 8, 10, 0.5);
             border-left: 3px solid var(--rosegold-main);
-            padding: 8px 12px;
+            padding: 8px 10px;
             border-radius: 0 8px 8px 0;
             border-top: 1px solid var(--line-color);
             border-right: 1px solid var(--line-color);
@@ -275,7 +281,7 @@
 
         .event-time {
             font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             color: var(--rosegold-light);
             margin-bottom: 2px;
@@ -283,12 +289,12 @@
 
         .event-title {
             font-weight: 500;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             color: var(--text-light);
         }
 
         .event-desc {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             margin-top: 2px;
         }
@@ -301,10 +307,10 @@
             gap: 8px;
             width: 100%;
             font-family: 'Jost', sans-serif;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            padding: 10px 14px;
-            border-radius: 12px;
+            padding: 9px 12px;
+            border-radius: 10px;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -325,21 +331,20 @@
         /* AUSKLAPPBARES RSVP FORMULAR */
         details.rsvp-details {
             border: 1px solid var(--rosegold-main);
-            border-radius: 14px;
+            border-radius: 12px;
             background: rgba(15, 10, 12, 0.5);
             overflow: hidden;
             transition: all 0.3s ease;
-            margin-top: 1rem;
         }
 
         summary.rsvp-summary {
             background: var(--rosegold-gradient);
             color: #1b1517;
             font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 700;
             letter-spacing: 0.05em;
-            padding: 12px 16px;
+            padding: 10px 14px;
             list-style: none;
             display: flex;
             align-items: center;
@@ -349,30 +354,30 @@
         }
 
         .form-section {
-            padding: 14px;
+            padding: 12px;
             text-align: left;
         }
 
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .form-control {
             width: 100%;
-            padding: 8px 12px;
+            padding: 7px 10px;
             background: rgba(12, 8, 10, 0.6);
             border: 1px solid var(--line-color);
             border-radius: 8px;
             color: #fff;
             font-family: 'Jost', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
         }
 
         .form-control:focus {
@@ -385,16 +390,16 @@
             background: var(--rosegold-gradient);
             color: #1b1517;
             font-family: 'Cinzel', serif;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            padding: 10px;
-            border-radius: 12px;
+            padding: 9px;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .location-link {
@@ -409,22 +414,23 @@
         }
 
         footer {
-            margin-top: 1.2rem;
+            margin-top: 0.8rem;
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: 1.05rem;
+            font-size: 0.98rem;
             color: var(--rosegold-light);
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         @media (max-width: 480px) {
-            .card-container { padding: 22px 16px; }
+            body { padding-bottom: 15px; }
+            .card-container { padding: 18px 14px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HINTERGRUND SLIDESHOW -->
+    <!-- SMARTPHONE-OPTIMIERTE HINTERGRUND-SLIDESHOW -->
     <div class="slider-wrapper">
         <img src="hintergrund1.jpg" class="slide-img active" alt="Hintergrund 1">
         <img src="hintergrund2.jpg" class="slide-img" alt="Hintergrund 2">
@@ -434,7 +440,7 @@
 
     <div class="bg-overlay"></div>
 
-    <!-- EINLADUNGS-KARTE -->
+    <!-- EINLADUNGS-KARTE (AM UNTEREN BILDSCHIRMRAND) -->
     <div class="card-container">
         <header>
             <h1>Save The Date</h1>
