@@ -1,469 +1,407 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hochzeit | 15. September 2028</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --rosegold: #e0aa9e;
-      --rosegold-light: #f7d5cc;
-      --rosegold-dark: #b87d70;
-      --bg-dark: rgba(27, 21, 23, 0.85);
-      --card-bg: rgba(35, 27, 30, 0.9);
-      --text-light: #fdfbfb;
-      --text-sub: #e2d7d3;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Save The Date</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1b1517;
+            --paper-rustic: rgba(25, 18, 20, 0.58);
+            --card-border: rgba(224, 170, 158, 0.35);
+            
+            --rosegold-light: #f7d5cc;
+            --rosegold-main: #e0aa9e;
+            --rosegold-deep: #b87d70;
+            --rosegold-gradient: linear-gradient(135deg, #f7d5cc 0%, #e0aa9e 50%, #b87d70 100%);
+            
+            --text-light: #ffffff;
+            --text-muted: #e2d7d3;
+            --line-color: rgba(224, 170, 158, 0.25);
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Montserrat', sans-serif;
-      color: var(--text-light);
-      background-color: #1b1517;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      overflow-x: hidden;
-    }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: var(--bg-dark);
+        }
 
-    /* Hintergrund-Slider */
-    .bg-slider {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-    }
+        body {
+            color: var(--text-light);
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 30px 6vw;
+            position: relative;
+        }
 
-    .bg-slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      transition: opacity 2s ease-in-out;
-    }
+        /* HINTERGRUND-SLIDER */
+        .slider-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            z-index: 1;
+            overflow: hidden;
+        }
 
-    .bg-slide.active {
-      opacity: 1;
-    }
+        .slide-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            opacity: 0;
+            transition: opacity 1.8s ease-in-out;
+            will-change: opacity;
+        }
 
-    .bg-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.85) 100%);
-      z-index: -1;
-    }
+        .slide-img.active {
+            opacity: 1;
+        }
 
-    .main-container {
-      width: 100%;
-      max-width: 800px;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            z-index: 2;
+            background: linear-gradient(to bottom, rgba(15, 10, 12, 0.15), rgba(15, 10, 12, 0.5));
+            pointer-events: none;
+        }
 
-    /* Header Styling */
-    header {
-      text-align: center;
-      background: var(--card-bg);
-      padding: 40px 20px;
-      border-radius: 20px;
-      border: 1px solid var(--rosegold);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      backdrop-filter: blur(10px);
-    }
+        /* SCHLANKE GLASKARTE */
+        .card-container {
+            max-width: 380px;
+            width: 100%;
+            background: var(--paper-rustic);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 22px 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 15px rgba(224, 170, 158, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            margin: auto 0;
+        }
 
-    h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3rem;
-      color: var(--rosegold-light);
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-      font-weight: 400;
-    }
+        .card-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background: var(--rosegold-gradient);
+            border-radius: 2px;
+        }
 
-    .subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1.4rem;
-      color: var(--rosegold);
-    }
+        .eyebrow {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--rosegold-main);
+            margin-bottom: 0.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
 
-    /* Card Layouts */
-    .card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 30px;
-      border: 1px solid rgba(224, 170, 158, 0.3);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-      backdrop-filter: blur(10px);
-    }
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 4vw, 1.9rem);
+            font-weight: 600;
+            background: var(--rosegold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.1rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
 
-    h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      color: var(--rosegold-light);
-      text-align: center;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-    }
+        .sub-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--text-light);
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
 
-    /* Countdown */
-    .countdown-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      text-align: center;
-    }
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto 0.9rem;
+            width: 50%;
+        }
 
-    .count-box {
-      background: rgba(224, 170, 158, 0.1);
-      border: 1px solid var(--rosegold);
-      padding: 15px 5px;
-      border-radius: 12px;
-    }
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--line-color);
+        }
 
-    .count-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem;
-      font-weight: bold;
-      color: var(--rosegold-light);
-      display: block;
-    }
+        .divider-icon {
+            color: var(--rosegold-main);
+            font-size: 0.75rem;
+        }
 
-    .count-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-sub);
-    }
+        /* COUNTDOWN */
+        .timer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 0.8rem;
+        }
 
-    /* Neuigkeiten Akkordeon */
-    .news-accordion {
-      margin-top: 25px;
-    }
+        .time-box {
+            background: rgba(12, 8, 10, 0.4);
+            border: 1px solid var(--line-color);
+            border-radius: 8px;
+            padding: 5px 2px;
+        }
 
-    .news-toggle {
-      width: 100%;
-      background: linear-gradient(135deg, var(--rosegold-dark) 0%, var(--rosegold) 100%);
-      color: #1b1517;
-      border: none;
-      padding: 16px 20px;
-      border-radius: 12px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 15px rgba(224, 170, 158, 0.3);
-      transition: all 0.3s ease;
-      animation: pulse-rosegold 2.5s infinite;
-    }
+        .number {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--rosegold-light);
+            display: block;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
 
-    .news-toggle:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(224, 170, 158, 0.5);
-    }
+        .label {
+            font-size: 0.48rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 1px;
+        }
 
-    .news-toggle-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        /* EINKLAPPBARE NEUIGKEITEN */
+        .accordion-box {
+            border-top: 1px dashed var(--line-color);
+            margin-top: 0.8rem;
+            padding-top: 0.6rem;
+            text-align: center;
+        }
 
-    .badge-new {
-      background-color: #1b1517;
-      color: var(--rosegold-light);
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+        details {
+            cursor: pointer;
+        }
 
-    .arrow-icon {
-      font-size: 0.85rem;
-      transition: transform 0.3s ease;
-      background: rgba(27, 21, 23, 0.2);
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        summary {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            color: var(--rosegold-main);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
 
-    .news-toggle.active {
-      animation: none;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
+        summary::-webkit-details-marker {
+            display: none;
+        }
 
-    .news-toggle.active .arrow-icon {
-      transform: rotate(180deg);
-    }
+        summary::after {
+            content: '▾';
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
 
-    .news-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.4s ease;
-      background: rgba(25, 18, 20, 0.95);
-      border: 1px solid var(--rosegold);
-      border-top: none;
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
-      padding: 0 20px;
-      color: var(--text-sub);
-      line-height: 1.6;
-    }
+        details[open] summary::after {
+            transform: rotate(180deg);
+        }
 
-    .news-content.open {
-      max-height: 500px;
-      padding: 20px;
-    }
+        .info-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            line-height: 1.3;
+        }
 
-    /* Formular Styling */
-    .form-group {
-      margin-bottom: 20px;
-    }
+        /* FOTOALBUM (SCHALTET AM 15.09.2028 UM 00:00 UHR FREI) */
+        #albumSection {
+            display: none;
+            border-top: 1px dashed var(--line-color);
+            padding-top: 0.8rem;
+            margin-top: 0.8rem;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--rosegold-light);
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
-    }
+        .btn {
+            display: inline-block;
+            background: var(--rosegold-gradient);
+            color: #1b1517;
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            padding: 8px 16px;
+            border-radius: 18px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            margin-top: 0.4rem;
+        }
 
-    input[type="text"], input[type="email"], textarea, select {
-      width: 100%;
-      padding: 12px 15px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(224, 170, 158, 0.4);
-      border-radius: 8px;
-      color: #fff;
-      font-family: inherit;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border 0.3s ease;
-    }
+        footer {
+            margin-top: 0.9rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--rosegold-light);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
 
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--rosegold);
-    }
+        /* SMARTPHONE-ANPASSUNG */
+        @media (max-width: 768px) {
+            body {
+                justify-content: center;
+                align-items: flex-end;
+                padding: 12px 10px 20px 10px;
+            }
 
-    .btn-submit {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, var(--rosegold) 0%, var(--rosegold-dark) 100%);
-      color: #1b1517;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 1px;
-      transition: opacity 0.3s ease;
-    }
-
-    .btn-submit:hover {
-      opacity: 0.9;
-    }
-
-    /* Galerie Platzhalter */
-    .gallery-locked {
-      text-align: center;
-      padding: 20px;
-      border: 1px dashed var(--rosegold);
-      border-radius: 12px;
-      color: var(--text-sub);
-    }
-
-    @keyframes pulse-rosegold {
-      0% {
-        box-shadow: 0 0 0 0 rgba(224, 170, 158, 0.5);
-      }
-      70% {
-        box-shadow: 0 0 0 12px rgba(224, 170, 158, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(224, 170, 158, 0);
-      }
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 2.2rem; }
-      .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    }
-  </style>
+            .card-container {
+                max-width: 100%;
+                padding: 16px 14px;
+                border-radius: 16px;
+                margin: 0;
+                background: rgba(22, 15, 18, 0.55);
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Hintergrund-Slider -->
-  <div class="bg-slider">
-    <div class="bg-slide active" style="background-image: url('hintergrund1.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('hintergrund2.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('hintergrund3.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('hintergrund4.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('hintergrund5.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('hintergrund6.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('hintergrund7.jpg');"></div>
-    <div class="bg-slide" style="background-image: url('hintergrund8.jpg');"></div>
-  </div>
-  <div class="bg-overlay"></div>
-
-  <div class="main-container">
-    
-    <!-- Header -->
-    <header>
-      <h1>Wir heiraten!</h1>
-      <div class="subtitle">15. September 2028 | Plettenberg & Steinbergs Wildewiese</div>
-    </header>
-
-    <!-- Countdown & Neuigkeiten Card -->
-    <div class="card">
-      <h2>Countdown bis zur Trauung</h2>
-      <div class="countdown-grid">
-        <div class="count-box"><span class="count-number" id="days">00</span><span class="count-label">Tage</span></div>
-        <div class="count-box"><span class="count-number" id="hours">00</span><span class="count-label">Stunden</span></div>
-        <div class="count-box"><span class="count-number" id="minutes">00</span><span class="count-label">Minuten</span></div>
-        <div class="count-box"><span class="count-number" id="seconds">00</span><span class="count-label">Sekunden</span></div>
-      </div>
-
-      <div class="news-accordion">
-        <button class="news-toggle" id="newsBtn" onclick="toggleNews()">
-          <span class="news-toggle-left">
-            <span>📢 Neuigkeiten & Wichtige Infos</span>
-            <span class="badge-new">NEU</span>
-          </span>
-          <span class="arrow-icon" id="arrow">▼</span>
-        </button>
-        <div class="news-content" id="newsContent">
-          <p><strong>Herzlich willkommen auf unserer Hochzeits-Website!</strong></p>
-          <p style="margin-top: 8px;">Wir freuen uns sehr darauf, diesen besonderen Tag mit euch zu feiern. Hier findet ihr fortlaufend alle aktuellen Informationen zum Ablauf und Tipps für die Zeit zwischen Trauung und Abendfeier.</p>
-        </div>
-      </div>
+    <div class="slider-wrapper">
+        <img src="hintergrund1.jpg" class="slide-img active" alt="Hintergrund 1">
+        <img src="hintergrund2.jpg" class="slide-img" alt="Hintergrund 2">
+        <img src="hintergrund3.jpg" class="slide-img" alt="Hintergrund 3">
+        <img src="hintergrund4.jpg" class="slide-img" alt="Hintergrund 4">
+        <img src="hintergrund5.jpg" class="slide-img" alt="Hintergrund 5">
+        <img src="hintergrund6.jpg" class="slide-img" alt="Hintergrund 6">
+        <img src="hintergrund7.jpg" class="slide-img" alt="Hintergrund 7">
+        <img src="hintergrund8.jpg" class="slide-img" alt="Hintergrund 8">
     </div>
 
-    <!-- Rückmeldung / Anmeldeformular -->
-    <div class="card">
-      <h2>Rückmeldung</h2>
-      <form action="https://api.web3forms.com/submit" method="POST">
-        <!-- Deinen Web3Forms Access Key hier eintragen -->
-        <input type="hidden" name="access_key" value="DEIN-WEB3FORMS-KEY-HIER">
-        
-        <div class="form-group">
-          <label for="name">Name(n)</label>
-          <input type="text" id="name" name="name" required placeholder="Vor- und Nachname">
+    <div class="bg-overlay"></div>
+
+    <div class="card-container">
+        <header>
+            <div class="eyebrow">Save The Date</div>
+            <h1>15. September 2028</h1>
+            <div class="sub-heading">Wir sagen Ja!</div>
+        </header>
+
+        <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-icon">✦</div>
+            <div class="divider-line"></div>
         </div>
 
-        <div class="form-group">
-          <label for="status">Kommst du / Kommt ihr?</label>
-          <select id="status" name="status" required>
-            <option value="" disabled selected>Bitte auswählen...</option>
-            <option value="Ja, ich/wir kommen gerne">Ja, ich/wir kommen sehr gerne!</option>
-            <option value="Nein, leider nicht">Nein, leider kann ich/können wir nicht dabei sein.</option>
-          </select>
+        <div class="timer">
+            <div class="time-box"><span class="number" id="days">00</span><div class="label">Tage</div></div>
+            <div class="time-box"><span class="number" id="hours">00</span><div class="label">Stunden</div></div>
+            <div class="time-box"><span class="number" id="minutes">00</span><div class="label">Minuten</div></div>
+            <div class="time-box"><span class="number" id="seconds">00</span><div class="label">Sekunden</div></div>
         </div>
 
-        <div class="form-group">
-          <label for="guests">Anzahl der Personen</label>
-          <input type="text" id="guests" name="guests" placeholder="z.B. 2 Erwachsene, 1 Kind">
+        <!-- ANMELDEFORMULAR ÜBER WEB3FORMS (GITHUB COMPATIBLE) -->
+        <form action="https://api.web3forms.com/submit" method="POST" style="display: none;">
+            <!-- ERSETZE DEINEN ACCESS KEY HIER -->
+            <input type="hidden" name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY">
+            <input type="hidden" name="subject" value="Neue Hochzeits-Rückmeldung">
+            <input type="text" name="name">
+            <select name="status"><option value="Ja">Ja</option></select>
+            <input type="number" name="begleitung">
+            <textarea name="message"></textarea>
+        </form>
+
+        <!-- EINKLAPPBARE NEUIGKEITEN -->
+        <div class="accordion-box">
+            <details>
+                <summary>Neuigkeiten</summary>
+                <p class="info-text">Haltet euch den Tag frei! Weitere Details und Informationen folgen in Kürze.</p>
+            </details>
         </div>
 
-        <div class="form-group">
-          <label for="message">Besondere Anmerkungen / Unverträglichkeiten</label>
-          <textarea id="message" name="message" rows="3" placeholder="Vegetarisch, Allergien etc."></textarea>
+        <!-- HOCHZEITSFOTOS: FREISCHALTUNG AM 15.09.2028 UM 00:00 UHR -->
+        <div id="albumSection">
+            <h2 style="font-size: 0.8rem; color: var(--rosegold-main); text-transform: uppercase; letter-spacing: 0.1em;">Hochzeitsfotos</h2>
+            <p class="info-text">Teilt eure schönsten Schnappschüsse direkt im Album!</p>
+            <a href="DEIN_GOOGLE_FOTOS_LINK" target="_blank" class="btn">Zum Album</a>
         </div>
 
-        <button type="submit" class="btn-submit">Rückmeldung absenden</button>
-      </form>
+        <footer>
+            Wir freuen uns auf euch!
+        </footer>
     </div>
 
-    <!-- Fotogalerie Card -->
-    <div class="card">
-      <h2>Fotogalerie</h2>
-      <div id="gallery-container" class="gallery-locked">
-        <p>🔒 Die Fotogalerie wird automatisch am 15. September 2028 freigeschaltet.</p>
-      </div>
-    </div>
+    <script>
+        // 1. COUNTDOWN ZUM 15.09.2028
+        const targetDate = new Date('2028-09-15T00:00:00').getTime();
 
-  </div>
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
 
-  <script>
-    // 1. Background Slider
-    const slides = document.querySelectorAll('.bg-slide');
-    let currentSlide = 0;
+            if (diff < 0) {
+                document.querySelector('.timer').innerHTML = "<h2 style='grid-column: span 4;'>Der große Tag ist da! 🎉</h2>";
+                return;
+            }
 
-    function nextSlide() {
-      slides[currentSlide].classList.remove('active');
-      currentSlide = (currentSlide + 1) % slides.length;
-      slides[currentSlide].classList.add('active');
-    }
-    setInterval(nextSlide, 6000);
+            document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+        }
 
-    // 2. Countdown Logic (Ziel: 15.09.2028, 11:00 Uhr)
-    const weddingDate = new Date('2028-09-15T11:00:00').getTime();
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = weddingDate - now;
+        // 2. FREISCHALTUNG AM 15.09.2028 UM 00:00 UHR
+        const albumUnlockDate = new Date('2028-09-15T00:00:00').getTime();
+        const now = new Date().getTime();
 
-      if (distance < 0) {
-        document.getElementById('days').innerText = '00';
-        document.getElementById('hours').innerText = '00';
-        document.getElementById('minutes').innerText = '00';
-        document.getElementById('seconds').innerText = '00';
-        
-        document.getElementById('gallery-container').innerHTML = '<p>📸 Willkommen in der Fotogalerie! Hier könnt ihr eure Bilder hochladen und ansehen.</p>';
-        return;
-      }
+        if (now >= albumUnlockDate) {
+            document.getElementById('albumSection').style.display = 'block';
+        }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (10Da du keine spezifische Anforderung genannt hast, worum es in dem Code gehen soll, hier ist ein direkt kopierbares **Python-Script (Standard-Vorlage mit nützlichen Grundfunktionen)**:
+        // 3. SLIDESHOW SCRIPT
+        const slides = document.querySelectorAll('.slide-img');
+        let currentSlide = 0;
 
-```python
-import sys
-import time
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
 
-def main():
-    print("=== Start des Scripts ===")
-    
-    # Beispiel für eine Schleife
-    for i in range(1, 4):
-        print(f"Schritt {i} wird ausgeführt...")
-        time.sleep(0.5)
-        
-    print("=== Erfolgreich abgeschlossen! ===")
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\nProgramm vom Benutzer abgebrochen.")
-        sys.exit(0)
-		
+        setInterval(nextSlide, 5000);
+    </script>
+</body>
+</html>
