@@ -486,13 +486,20 @@
                 </summary>
                 <div class="news-container">
                     
-                    <!-- 1. Hinweis zur Website -->
+                    <!-- 1. Hotel-Neuigkeit -->
+                    <div class="news-item">
+                        &#127976; <strong>Hotelzimmer:</strong><br>
+                        Im Hotel Steinbergs Wildewiese werden Zimmer f&uuml;r die Hochzeitsg&auml;ste geblockt, falls Ihr ein Zimmer ben&ouml;tigt gebt das bitte in der R&uuml;ckmeldung an, damit wir das fr&uuml;hzeitig kommunizieren k&ouml;nnen.<br>
+                        Ein Link zur Buchung folgt zum Ende des Jahres hier!
+                    </div>
+
+                    <!-- 2. Hinweis zur Website -->
                     <div class="news-item">
                         &#127760; <strong>Informationen rund um die Hochzeit:</strong><br>
                         Alle weiteren Details zum Ablauf, Anfahrt, &Uuml;bernachtungsm&ouml;glichkeiten sowie kurzfristige Neuigkeiten findet ihr jederzeit direkt hier auf unserer Website.
                     </div>
 
-                    <!-- 2. Ablaufplan -->
+                    <!-- 3. Ablaufplan -->
                     <div class="news-item">
                         &#128204; <strong>Vorl&auml;ufiger Ablauf:</strong>
                         <div class="timeline">
@@ -513,7 +520,7 @@
                         </div>
                     </div>
 
-                    <!-- 3. Kalender eintragen -->
+                    <!-- 4. Kalender eintragen -->
                     <div class="news-item">
                         &#128197; <strong>Termin sichern:</strong><br>
                         Speichert euch unseren gro&szlig;en Tag direkt in euren Smartphone-Kalender:
@@ -555,8 +562,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="message">Hinweise / Allergien / Musikwunsch:</label>
+                        <label for="message">Fragen / Hinweise / Allergien:</label>
                         <textarea id="message" name="Nachricht" class="form-control" rows="2" placeholder="optional..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hotel">Wollt Ihr ein Zimmer im Hotel buchen?</label>
+                        <select id="hotel" name="Hotelzimmer" class="form-control">
+                            <option value="Nein">Nein</option>
+                            <option value="Ja">Ja</option>
+                        </select>
                     </div>
 
                     <button type="submit" id="btn-submit" class="btn-submit">Absenden</button>
@@ -615,14 +630,45 @@
                     form.reset();
                 } else {
                     console.log(response);
-                    result.Das liegt an zwei klassischen Problemen: **Umlaut-Encoding (UTF-8)** und **Emojis in Datenbanken/Schriften**.
+                    result.style.color = "#ff6b6b";
+                    result.innerHTML = json.message || "Es gab ein Problem beim Senden.";
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                result.style.display = "block";
+                result.style.color = "#ff6b6b";
+                result.innerHTML = "Fehler beim Senden. Bitte versuche es erneut.";
+            })
+            .then(function() {
+                submitBtn.innerText = "Absenden";
+                submitBtn.disabled = false;
+            });
+        });
 
-Das Symbol `` (Replacement Character) entsteht, wenn Text in UTF-8 kodiert wurde, die Datei oder die Datenbankverbindung diesen Text aber als ISO-8859-1 (Latin-1) liest – oder umgekehrt. 
+        // SMARTPHONE-KALENDER-EINTRAG (.ICS) GENERATOR
+        function downloadICS() {
+            const icsData = 
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hochzeit//Cate und Ingo//DE
+BEGIN:VEVENT
+SUMMARY:Hochzeit Cate&Ingo
+DESCRIPTION:11:00 Uhr Standesamt | 17:00 Uhr Feier in Steinbergs Wildewiese!
+LOCATION:Steinbergs Wildewiese\\, Wildewiese 1\\, 59846 Sundern (Sauerland)
+DTSTART:20280915T090000Z
+DTEND:20280916T020000Z
+END:VEVENT
+END:VCALENDAR`;
 
----
-
-### 1. UTF-8 Meta-Tag in den HTML-Head einfügen
-Stelle sicher, dass im `<head>`-Bereich deiner HTML-Datei direkt oben diese Zeile steht:
-
-```html
-<meta charset="UTF-8">
+            const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', 'Hochzeit_Cate_und_Ingo.ics');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
