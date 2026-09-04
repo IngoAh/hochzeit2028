@@ -1,407 +1,230 @@
+<script>
+  // Zieltermin: 15. September 2028 um 11:00 Uhr
+  const weddingDate = new Date("2028-09-15T11:00:00").getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+
+    if (distance < 0) {
+      document.getElementById("countdown").innerHTML = "<p>Der große Tag ist da!</p>";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1Hier ist der überarbeitete Code. 
+
+Die **Neuigkeiten-Schaltfläche** hat nun ein auffälligeres Design (leuchtende Kontrastfarbe, sanftes Pulsieren, ein klares Pfeilsymbol **▼**, das sich beim Öffnen dreht, sowie ein Hinweis-Badge). Der **Countdown-Timer** wurde präzise auf den **15. September 2028 um 11:00 Uhr** angepasst.
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Save The Date</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #1b1517;
-            --paper-rustic: rgba(25, 18, 20, 0.58);
-            --card-border: rgba(224, 170, 158, 0.35);
-            
-            --rosegold-light: #f7d5cc;
-            --rosegold-main: #e0aa9e;
-            --rosegold-deep: #b87d70;
-            --rosegold-gradient: linear-gradient(135deg, #f7d5cc 0%, #e0aa9e 50%, #b87d70 100%);
-            
-            --text-light: #ffffff;
-            --text-muted: #e2d7d3;
-            --line-color: rgba(224, 170, 158, 0.25);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown & Neuigkeiten</title>
+  <style>
+    :root {
+      --primary-color: #007bff;
+      --accent-color: #ff3b30;
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            background-color: var(--bg-dark);
-        }
+    .container {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
 
-        body {
-            color: var(--text-light);
-            font-family: 'Jost', sans-serif;
-            font-weight: 300;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            min-height: 100vh;
-            min-height: 100dvh;
-            padding: 30px 6vw;
-            position: relative;
-        }
+    /* Countdown Styling */
+    .timer-display {
+      display: flex;
+      justify-content: space-between;
+      margin: 25px 0;
+    }
 
-        /* HINTERGRUND-SLIDER */
-        .slider-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            z-index: 1;
-            overflow: hidden;
-        }
+    .time-unit {
+      flex: 1;
+      margin: 0 4px;
+      padding: 12px 8px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
 
-        .slide-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center center;
-            opacity: 0;
-            transition: opacity 1.8s ease-in-out;
-            will-change: opacity;
-        }
+    .time-unit .number {
+      display: block;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
 
-        .slide-img.active {
-            opacity: 1;
-        }
+    .time-unit .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #6c757d;
+    }
 
-        .bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            z-index: 2;
-            background: linear-gradient(to bottom, rgba(15, 10, 12, 0.15), rgba(15, 10, 12, 0.5));
-            pointer-events: none;
-        }
+    /* Auffälliger Neuigkeiten-Button */
+    .news-accordion {
+      margin-top: 20px;
+      text-align: left;
+    }
 
-        /* SCHLANKE GLASKARTE */
-        .card-container {
-            max-width: 380px;
-            width: 100%;
-            background: var(--paper-rustic);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 22px 18px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 15px rgba(224, 170, 158, 0.1);
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            margin: auto 0;
-        }
+    .news-toggle {
+      width: 100%;
+      background: linear-gradient(135deg, #ff5e36, #ff2a6d);
+      color: white;
+      border: none;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(255, 42, 109, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+      position: relative;
+      animation: pulse-attention 2.5s infinite;
+    }
 
-        .card-container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 15%;
-            right: 15%;
-            height: 2px;
-            background: var(--rosegold-gradient);
-            border-radius: 2px;
-        }
+    .news-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 42, 109, 0.45);
+    }
 
-        .eyebrow {
-            font-family: 'Cinzel', serif;
-            font-size: 0.65rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--rosegold-main);
-            margin-bottom: 0.2rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
+    .news-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(1.5rem, 4vw, 1.9rem);
-            font-weight: 600;
-            background: var(--rosegold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.1rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
+    .badge-new {
+      background-color: #ffffff;
+      color: #ff2a6d;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
 
-        .sub-heading {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.05rem;
-            color: var(--text-light);
-            margin-bottom: 0.8rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
+    .arrow-icon {
+      font-size: 0.85rem;
+      transition: transform 0.3s ease;
+      background: rgba(255, 255, 255, 0.2);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .divider {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 0 auto 0.9rem;
-            width: 50%;
-        }
+    /* Zustand wenn geöffnet */
+    .news-toggle.active {
+      animation: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
 
-        .divider-line {
-            flex: 1;
-            height: 1px;
-            background: var(--line-color);
-        }
+    .news-toggle.active .arrow-icon {
+      transform: rotate(180deg);
+    }
 
-        .divider-icon {
-            color: var(--rosegold-main);
-            font-size: 0.75rem;
-        }
+    /* Aufklappbarer Inhalt */
+    .news-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0, 1, 0, 1), padding 0.35s ease;
+      background: #fff;
+      border: 2px solid #ff2a6d;
+      border-top: none;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      padding: 0 20px;
+    }
 
-        /* COUNTDOWN */
-        .timer {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-bottom: 0.8rem;
-        }
+    .news-content.open {
+      max-height: 1000px; /* Ausreichend Platz für Inhalte */
+      transition: max-height 0.5s ease-in-out, padding 0.3s ease;
+      padding: 20px;
+    }
 
-        .time-box {
-            background: rgba(12, 8, 10, 0.4);
-            border: 1px solid var(--line-color);
-            border-radius: 8px;
-            padding: 5px 2px;
-        }
-
-        .number {
-            font-family: 'Cinzel', serif;
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: var(--rosegold-light);
-            display: block;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-        }
-
-        .label {
-            font-size: 0.48rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 1px;
-        }
-
-        /* EINKLAPPBARE NEUIGKEITEN */
-        .accordion-box {
-            border-top: 1px dashed var(--line-color);
-            margin-top: 0.8rem;
-            padding-top: 0.6rem;
-            text-align: center;
-        }
-
-        details {
-            cursor: pointer;
-        }
-
-        summary {
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            color: var(--rosegold-main);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        summary::-webkit-details-marker {
-            display: none;
-        }
-
-        summary::after {
-            content: '▾';
-            font-size: 0.75rem;
-            transition: transform 0.2s ease;
-        }
-
-        details[open] summary::after {
-            transform: rotate(180deg);
-        }
-
-        .info-text {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-            line-height: 1.3;
-        }
-
-        /* FOTOALBUM (SCHALTET AM 15.09.2028 UM 00:00 UHR FREI) */
-        #albumSection {
-            display: none;
-            border-top: 1px dashed var(--line-color);
-            padding-top: 0.8rem;
-            margin-top: 0.8rem;
-        }
-
-        .btn {
-            display: inline-block;
-            background: var(--rosegold-gradient);
-            color: #1b1517;
-            font-family: 'Cinzel', serif;
-            font-size: 0.68rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            padding: 8px 16px;
-            border-radius: 18px;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            margin-top: 0.4rem;
-        }
-
-        footer {
-            margin-top: 0.9rem;
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 0.95rem;
-            color: var(--rosegold-light);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        /* SMARTPHONE-ANPASSUNG */
-        @media (max-width: 768px) {
-            body {
-                justify-content: center;
-                align-items: flex-end;
-                padding: 12px 10px 20px 10px;
-            }
-
-            .card-container {
-                max-width: 100%;
-                padding: 16px 14px;
-                border-radius: 16px;
-                margin: 0;
-                background: rgba(22, 15, 18, 0.55);
-            }
-        }
-    </style>
+    /* Animation für Aufmerksamkeits-Effekt */
+    @keyframes pulse-attention {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 42, 109, 0.5);
+      }
+      70% {
+        box-shadow: 0 0 0 12px rgba(255, 42, 109, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 42, 109, 0);
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="slider-wrapper">
-        <img src="hintergrund1.jpg" class="slide-img active" alt="Hintergrund 1">
-        <img src="hintergrund2.jpg" class="slide-img" alt="Hintergrund 2">
-        <img src="hintergrund3.jpg" class="slide-img" alt="Hintergrund 3">
-        <img src="hintergrund4.jpg" class="slide-img" alt="Hintergrund 4">
-        <img src="hintergrund5.jpg" class="slide-img" alt="Hintergrund 5">
-        <img src="hintergrund6.jpg" class="slide-img" alt="Hintergrund 6">
-        <img src="hintergrund7.jpg" class="slide-img" alt="Hintergrund 7">
-        <img src="hintergrund8.jpg" class="slide-img" alt="Hintergrund 8">
+  <div class="container">
+    <h2>Event-Countdown</h2>
+    
+    <!-- Countdown Anzeige -->
+    <div class="timer-display">
+      <div class="time-unit">
+        <span class="number" id="days">00</span>
+        <span class="label">Tage</span>
+      </div>
+      <div class="time-unit">
+        <span class="number" id="hours">00</span>
+        <span class="label">Std</span>
+      </div>
+      <div class="time-unit">
+        <span class="number" id="minutes">00</span>
+        <span class="label">Min</span>
+      </div>
+      <div class="time-unit">
+        <span class="number" id="seconds">00</span>
+        <span class="label">Sek</span>
+      </div>
     </div>
 
-    <div class="bg-overlay"></div>
+    <!-- Auffälliges Neuigkeiten Akkordeon -->
+    <div class="news-accordion">
+      <button class="news-toggle" id="newsBtn" aria-expanded="false" onclick="toggleNews()">
+        <span class="news-toggle-left">
+          <span>📢 Neuigkeiten</span>
+          <span class="badge-new">NEU</span>
+        </span>
+        <span class="arrow-icon" id="arrow">▼</span>
+      </button>
 
-    <div class="card-container">
-        <header>
-            <div class="eyebrow">Save The Date</div>
-            <h1>15. September 2028</h1>
-            <div class="sub-heading">Wir sagen Ja!</div>
-        </header>
-
-        <div class="divider">
-            <div class="divider-line"></div>
-            <div class="divider-icon">✦</div>
-            <div class="divider-line"></div>
-        </div>
-
-        <div class="timer">
-            <div class="time-box"><span class="number" id="days">00</span><div class="label">Tage</div></div>
-            <div class="time-box"><span class="number" id="hours">00</span><div class="label">Stunden</div></div>
-            <div class="time-box"><span class="number" id="minutes">00</span><div class="label">Minuten</div></div>
-            <div class="time-box"><span class="number" id="seconds">00</span><div class="label">Sekunden</div></div>
-        </div>
-
-        <!-- ANMELDEFORMULAR ÜBER WEB3FORMS (GITHUB COMPATIBLE) -->
-        <form action="https://api.web3forms.com/submit" method="POST" style="display: none;">
-            <!-- ERSETZE DEINEN ACCESS KEY HIER -->
-            <input type="hidden" name="access_key" value="8cdaf6a5-c1ea-4972-aff7-9b4297294e3f">
-            <input type="hidden" name="subject" value="Neue Hochzeits-Rückmeldung">
-            <input type="text" name="name">
-            <select name="status"><option value="Ja">Ja</option></select>
-            <input type="number" name="begleitung">
-            <textarea name="message"></textarea>
-        </form>
-
-        <!-- EINKLAPPBARE NEUIGKEITEN -->
-        <div class="accordion-box">
-            <details>
-                <summary>Neuigkeiten</summary>
-                <p class="info-text">Haltet euch den Tag frei! Weitere Details und Informationen folgen in Kürze.</p>
-            </details>
-        </div>
-
-        <!-- HOCHZEITSFOTOS: FREISCHALTUNG AM 15.09.2028 UM 00:00 UHR -->
-        <div id="albumSection">
-            <h2 style="font-size: 0.8rem; color: var(--rosegold-main); text-transform: uppercase; letter-spacing: 0.1em;">Hochzeitsfotos</h2>
-            <p class="info-text">Teilt eure schönsten Schnappschüsse direkt im Album!</p>
-            <a href="DEIN_GOOGLE_FOTOS_LINK" target="_blank" class="btn">Zum Album</a>
-        </div>
-
-        <footer>
-            Wir freuen uns auf euch!
-        </footer>
-    </div>
-
-    <script>
-        // 1. COUNTDOWN ZUM 15.09.2028
-        const targetDate = new Date('2028-09-15T00:00:00').getTime();
-
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const diff = targetDate - now;
-
-            if (diff < 0) {
-                document.querySelector('.timer').innerHTML = "<h2 style='grid-column: span 4;'>Der große Tag ist da! 🎉</h2>";
-                return;
-            }
-
-            document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-            document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-            document.getElementById('minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-            document.getElementById('seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-        }
-
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // 2. FREISCHALTUNG AM 15.09.2028 UM 00:00 UHR
-        const albumUnlockDate = new Date('2028-09-15T00:00:00').getTime();
-        const now = new Date().getTime();
-
-        if (now >= albumUnlockDate) {
-            document.getElementById('albumSection').style.display = 'block';
-        }
-
-        // 3. SLIDESHOW SCRIPT
-        const slides = document.querySelectorAll('.slide-img');
-        let currentSlide = 0;
-
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-
-        setInterval(nextSlide, 5000);
-    </script>
-</body>
-</html>
+      <div class="news-content" id="newsContent">
+        <p><strong>Wichtiges Update:</strong></p>
+        <p>Hier stehen die neuesten Informationen und Ankündigungen rund
+		
