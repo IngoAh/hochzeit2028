@@ -196,7 +196,7 @@
             margin-top: 1px;
         }
 
-        /* EINKLAPPBARE NEUIGKEITEN (AUFFÄLLIGES DESIGN) */
+        /* EINKLAPPBARE NEUIGKEITEN */
         .accordion-box {
             border-top: 1px dashed var(--line-color);
             margin-top: 0.8rem;
@@ -277,13 +277,72 @@
             transform: rotate(180deg);
         }
 
+        .news-container {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .news-item {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line-color);
+        }
+
+        .news-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .news-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--rosegold-light);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         .info-text {
             font-size: 0.8rem;
             color: var(--text-muted);
-            padding: 12px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
             line-height: 1.4;
-            text-align: left;
+        }
+
+        .location-link {
+            display: inline-block;
+            margin-top: 6px;
+            color: var(--rosegold-main);
+            text-decoration: underline;
+            font-size: 0.75rem;
+        }
+
+        .location-link:hover {
+            color: var(--rosegold-light);
+        }
+
+        .btn-cal {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(224, 170, 158, 0.15);
+            border: 1px solid var(--rosegold-main);
+            color: var(--rosegold-light);
+            font-family: 'Jost', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 14px;
+            text-decoration: none;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cal:hover {
+            background: var(--rosegold-gradient);
+            color: #1b1517;
         }
 
         @keyframes pulse-rosegold {
@@ -389,7 +448,7 @@
             <textarea name="message"></textarea>
         </form>
 
-       <!-- EINKLAPPBARE NEUIGKEITEN -->
+        <!-- EINKLAPPBARE NEUIGKEITEN -->
         <div class="accordion-box">
             <details>
                 <summary>
@@ -411,7 +470,8 @@
                     
                     <div class="news-item">
                         <div class="news-title">🗓️ Save The Date</div>
-                        <p class="info-text">Haltet euch den Tag frei! Weitere Details und Informationen zum genaueren Ablauf folgen in Kürze.</p>
+                        <p class="info-text">Haltet euch den Tag frei! Speicher das Datum direkt in deinen Smartphone-Kalender:</p>
+                        <button onclick="downloadICS()" class="btn-cal">📅 In Smartphone-Kalender eintragen</button>
                     </div>
                 </div>
             </details>
@@ -470,6 +530,30 @@
         }
 
         setInterval(nextSlide, 5000);
+
+        // 4. SMARTPHONE-KALENDER-EINTRAG (.ICS) GENERATOR
+        function downloadICS() {
+            const icsData = 
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hochzeit//Save The Date//DE
+BEGIN:VEVENT
+SUMMARY:Hochzeit
+DESCRIPTION:Wir feiern unsere Hochzeit in Steinbergs Wildewiese!
+LOCATION:Steinbergs Wildewiese\\, Wildewiese 1\\, 59846 Sundern (Sauerland)
+DTSTART:20280915T090000Z
+DTEND:20280916T020000Z
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', 'Hochzeit.ics');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     </script>
 </body>
 </html>
