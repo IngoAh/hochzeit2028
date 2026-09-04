@@ -1,24 +1,3 @@
-<script>
-  // Zieltermin: 15. September 2028 um 11:00 Uhr
-  const weddingDate = new Date("2028-09-15T11:00:00").getTime();
-
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
-
-    if (distance < 0) {
-      document.getElementById("countdown").innerHTML = "<p>Der große Tag ist da!</p>";
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1Hier ist der überarbeitete Code. 
-
-Die **Neuigkeiten-Schaltfläche** hat nun ein auffälligeres Design (leuchtende Kontrastfarbe, sanftes Pulsieren, ein klares Pfeilsymbol **▼**, das sich beim Öffnen dreht, sowie ein Hinweis-Badge). Der **Countdown-Timer** wurde präzise auf den **15. September 2028 um 11:00 Uhr** angepasst.
-
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -28,7 +7,7 @@ Die **Neuigkeiten-Schaltfläche** hat nun ein auffälligeres Design (leuchtende 
   <style>
     :root {
       --primary-color: #007bff;
-      --accent-color: #ff3b30;
+      --accent-color: #ff2a6d;
       --bg-color: #f4f6f9;
       --card-bg: #ffffff;
       --text-color: #333333;
@@ -170,7 +149,7 @@ Die **Neuigkeiten-Schaltfläche** hat nun ein auffälligeres Design (leuchtende 
     }
 
     .news-content.open {
-      max-height: 1000px; /* Ausreichend Platz für Inhalte */
+      max-height: 1000px;
       transition: max-height 0.5s ease-in-out, padding 0.3s ease;
       padding: 20px;
     }
@@ -226,5 +205,49 @@ Die **Neuigkeiten-Schaltfläche** hat nun ein auffälligeres Design (leuchtende 
 
       <div class="news-content" id="newsContent">
         <p><strong>Wichtiges Update:</strong></p>
-        <p>Hier stehen die neuesten Informationen und Ankündigungen rund
-		
+        <p>Hier stehen die neuesten Informationen und Ankündigungen rund um das Event. Schau regelmäßig vorbei, um nichts zu verpassen!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Ziel datum: 15. September 2028 um 11:00:00 Uhr
+    const targetDate = new Date('2028-09-15T11:00:00').getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference <= 0) {
+        document.querySelector('.timer-display').innerHTML = "<h3>Das Event hat begonnen!</h3>";
+        return;
+      }
+
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      document.getElementById('days').innerText = String(days).padStart(2, '0');
+      document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+      document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+    }
+
+    // Neuigkeiten ein-/ausklappen
+    function toggleNews() {
+      const newsBtn = document.getElementById('newsBtn');
+      const newsContent = document.getElementById('newsContent');
+      
+      const isOpen = newsContent.classList.toggle('open');
+      newsBtn.classList.toggle('active');
+      newsBtn.setAttribute('aria-expanded', isOpen);
+    }
+
+    // Intervall starten
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+
+</body>
+</html>
