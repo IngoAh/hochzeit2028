@@ -3,97 +3,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Countdown & Neuigkeiten</title>
+  <title>Hochzeit | 15. September 2028</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --primary-color: #007bff;
-      --accent-color: #ff2a6d;
-      --bg-color: #f4f6f9;
-      --card-bg: #ffffff;
-      --text-color: #333333;
+      --rosegold: #e0aa9e;
+      --rosegold-light: #f7d5cc;
+      --rosegold-dark: #b87d70;
+      --bg-dark: rgba(27, 21, 23, 0.85);
+      --card-bg: rgba(35, 27, 30, 0.9);
+      --text-light: #fdfbfb;
+      --text-sub: #e2d7d3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-light);
+      background-color: #1b1517;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      box-sizing: border-box;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    .container {
-      background: var(--card-bg);
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-      max-width: 500px;
+    /* Hintergrund-Slider */
+    .bg-slider {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    .bg-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+
+    .bg-slide.active {
+      opacity: 1;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.85) 100%);
+      z-index: -1;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 800px;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* Header Styling */
+    header {
+      text-align: center;
+      background: var(--card-bg);
+      padding: 40px 20px;
+      border-radius: 20px;
+      border: 1px solid var(--rosegold);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      color: var(--rosegold-light);
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--rosegold);
+    }
+
+    /* Card Layouts */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid rgba(224, 170, 158, 0.3);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--rosegold-light);
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    /* Countdown */
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
       text-align: center;
     }
 
-    /* Countdown Styling */
-    .timer-display {
-      display: flex;
-      justify-content: space-between;
-      margin: 25px 0;
+    .count-box {
+      background: rgba(224, 170, 158, 0.1);
+      border: 1px solid var(--rosegold);
+      padding: 15px 5px;
+      border-radius: 12px;
     }
 
-    .time-unit {
-      flex: 1;
-      margin: 0 4px;
-      padding: 12px 8px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      border: 1px solid #e9ecef;
-    }
-
-    .time-unit .number {
-      display: block;
-      font-size: 1.8rem;
+    .count-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
       font-weight: bold;
-      color: var(--primary-color);
+      color: var(--rosegold-light);
+      display: block;
     }
 
-    .time-unit .label {
+    .count-label {
       font-size: 0.75rem;
       text-transform: uppercase;
-      color: #6c757d;
+      letter-spacing: 1px;
+      color: var(--text-sub);
     }
 
-    /* Auffälliger Neuigkeiten-Button */
+    /* Neuigkeiten Akkordeon */
     .news-accordion {
-      margin-top: 20px;
-      text-align: left;
+      margin-top: 25px;
     }
 
     .news-toggle {
       width: 100%;
-      background: linear-gradient(135deg, #ff5e36, #ff2a6d);
-      color: white;
+      background: linear-gradient(135deg, var(--rosegold-dark) 0%, var(--rosegold) 100%);
+      color: #1b1517;
       border: none;
       padding: 16px 20px;
       border-radius: 12px;
       font-size: 1.05rem;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 15px rgba(255, 42, 109, 0.35);
-      transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
-      position: relative;
-      animation: pulse-attention 2.5s infinite;
+      box-shadow: 0 4px 15px rgba(224, 170, 158, 0.3);
+      transition: all 0.3s ease;
+      animation: pulse-rosegold 2.5s infinite;
     }
 
     .news-toggle:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 42, 109, 0.45);
+      box-shadow: 0 6px 20px rgba(224, 170, 158, 0.5);
     }
 
     .news-toggle-left {
@@ -103,19 +193,20 @@
     }
 
     .badge-new {
-      background-color: #ffffff;
-      color: #ff2a6d;
+      background-color: #1b1517;
+      color: var(--rosegold-light);
       font-size: 0.75rem;
-      font-weight: 800;
+      font-weight: 600;
       padding: 3px 8px;
       border-radius: 20px;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .arrow-icon {
       font-size: 0.85rem;
       transition: transform 0.3s ease;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(27, 21, 23, 0.2);
       width: 28px;
       height: 28px;
       border-radius: 50%;
@@ -124,7 +215,6 @@
       justify-content: center;
     }
 
-    /* Zustand wenn geöffnet */
     .news-toggle.active {
       animation: none;
       border-bottom-left-radius: 0;
@@ -135,119 +225,245 @@
       transform: rotate(180deg);
     }
 
-    /* Aufklappbarer Inhalt */
     .news-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0, 1, 0, 1), padding 0.35s ease;
-      background: #fff;
-      border: 2px solid #ff2a6d;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      background: rgba(25, 18, 20, 0.95);
+      border: 1px solid var(--rosegold);
       border-top: none;
       border-bottom-left-radius: 12px;
       border-bottom-right-radius: 12px;
       padding: 0 20px;
+      color: var(--text-sub);
+      line-height: 1.6;
     }
 
     .news-content.open {
-      max-height: 1000px;
-      transition: max-height 0.5s ease-in-out, padding 0.3s ease;
+      max-height: 500px;
       padding: 20px;
     }
 
-    /* Animation für Aufmerksamkeits-Effekt */
-    @keyframes pulse-attention {
+    /* Formular Styling */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--rosegold-light);
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"], input[type="email"], textarea, select {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(224, 170, 158, 0.4);
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--rosegold);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--rosegold) 0%, var(--rosegold-dark) 100%);
+      color: #1b1517;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.9;
+    }
+
+    /* Galerie Platzhalter */
+    .gallery-locked {
+      text-align: center;
+      padding: 20px;
+      border: 1px dashed var(--rosegold);
+      border-radius: 12px;
+      color: var(--text-sub);
+    }
+
+    @keyframes pulse-rosegold {
       0% {
-        box-shadow: 0 0 0 0 rgba(255, 42, 109, 0.5);
+        box-shadow: 0 0 0 0 rgba(224, 170, 158, 0.5);
       }
       70% {
-        box-shadow: 0 0 0 12px rgba(255, 42, 109, 0);
+        box-shadow: 0 0 0 12px rgba(224, 170, 158, 0);
       }
       100% {
-        box-shadow: 0 0 0 0 rgba(255, 42, 109, 0);
+        box-shadow: 0 0 0 0 rgba(224, 170, 158, 0);
       }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2.2rem; }
+      .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h2>Event-Countdown</h2>
+  <!-- Hintergrund-Slider -->
+  <div class="bg-slider">
+    <div class="bg-slide active" style="background-image: url('hintergrund1.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('hintergrund2.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('hintergrund3.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('hintergrund4.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('hintergrund5.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('hintergrund6.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('hintergrund7.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('hintergrund8.jpg');"></div>
+  </div>
+  <div class="bg-overlay"></div>
+
+  <div class="main-container">
     
-    <!-- Countdown Anzeige -->
-    <div class="timer-display">
-      <div class="time-unit">
-        <span class="number" id="days">00</span>
-        <span class="label">Tage</span>
+    <!-- Header -->
+    <header>
+      <h1>Wir heiraten!</h1>
+      <div class="subtitle">15. September 2028 | Plettenberg & Steinbergs Wildewiese</div>
+    </header>
+
+    <!-- Countdown & Neuigkeiten Card -->
+    <div class="card">
+      <h2>Countdown bis zur Trauung</h2>
+      <div class="countdown-grid">
+        <div class="count-box"><span class="count-number" id="days">00</span><span class="count-label">Tage</span></div>
+        <div class="count-box"><span class="count-number" id="hours">00</span><span class="count-label">Stunden</span></div>
+        <div class="count-box"><span class="count-number" id="minutes">00</span><span class="count-label">Minuten</span></div>
+        <div class="count-box"><span class="count-number" id="seconds">00</span><span class="count-label">Sekunden</span></div>
       </div>
-      <div class="time-unit">
-        <span class="number" id="hours">00</span>
-        <span class="label">Std</span>
-      </div>
-      <div class="time-unit">
-        <span class="number" id="minutes">00</span>
-        <span class="label">Min</span>
-      </div>
-      <div class="time-unit">
-        <span class="number" id="seconds">00</span>
-        <span class="label">Sek</span>
+
+      <div class="news-accordion">
+        <button class="news-toggle" id="newsBtn" onclick="toggleNews()">
+          <span class="news-toggle-left">
+            <span>📢 Neuigkeiten & Wichtige Infos</span>
+            <span class="badge-new">NEU</span>
+          </span>
+          <span class="arrow-icon" id="arrow">▼</span>
+        </button>
+        <div class="news-content" id="newsContent">
+          <p><strong>Herzlich willkommen auf unserer Hochzeits-Website!</strong></p>
+          <p style="margin-top: 8px;">Wir freuen uns sehr darauf, diesen besonderen Tag mit euch zu feiern. Hier findet ihr fortlaufend alle aktuellen Informationen zum Ablauf und Tipps für die Zeit zwischen Trauung und Abendfeier.</p>
+        </div>
       </div>
     </div>
 
-    <!-- Auffälliges Neuigkeiten Akkordeon -->
-    <div class="news-accordion">
-      <button class="news-toggle" id="newsBtn" aria-expanded="false" onclick="toggleNews()">
-        <span class="news-toggle-left">
-          <span>📢 Neuigkeiten</span>
-          <span class="badge-new">NEU</span>
-        </span>
-        <span class="arrow-icon" id="arrow">▼</span>
-      </button>
+    <!-- Rückmeldung / Anmeldeformular -->
+    <div class="card">
+      <h2>Rückmeldung</h2>
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <!-- Deinen Web3Forms Access Key hier eintragen -->
+        <input type="hidden" name="access_key" value="DEIN-WEB3FORMS-KEY-HIER">
+        
+        <div class="form-group">
+          <label for="name">Name(n)</label>
+          <input type="text" id="name" name="name" required placeholder="Vor- und Nachname">
+        </div>
 
-      <div class="news-content" id="newsContent">
-        <p><strong>Wichtiges Update:</strong></p>
-        <p>Hier stehen die neuesten Informationen und Ankündigungen rund um das Event. Schau regelmäßig vorbei, um nichts zu verpassen!</p>
+        <div class="form-group">
+          <label for="status">Kommst du / Kommt ihr?</label>
+          <select id="status" name="status" required>
+            <option value="" disabled selected>Bitte auswählen...</option>
+            <option value="Ja, ich/wir kommen gerne">Ja, ich/wir kommen sehr gerne!</option>
+            <option value="Nein, leider nicht">Nein, leider kann ich/können wir nicht dabei sein.</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="guests">Anzahl der Personen</label>
+          <input type="text" id="guests" name="guests" placeholder="z.B. 2 Erwachsene, 1 Kind">
+        </div>
+
+        <div class="form-group">
+          <label for="message">Besondere Anmerkungen / Unverträglichkeiten</label>
+          <textarea id="message" name="message" rows="3" placeholder="Vegetarisch, Allergien etc."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Rückmeldung absenden</button>
+      </form>
+    </div>
+
+    <!-- Fotogalerie Card -->
+    <div class="card">
+      <h2>Fotogalerie</h2>
+      <div id="gallery-container" class="gallery-locked">
+        <p>🔒 Die Fotogalerie wird automatisch am 15. September 2028 freigeschaltet.</p>
       </div>
     </div>
+
   </div>
 
   <script>
-    // Ziel datum: 15. September 2028 um 11:00:00 Uhr
-    const targetDate = new Date('2028-09-15T11:00:00').getTime();
+    // 1. Background Slider
+    const slides = document.querySelectorAll('.bg-slide');
+    let currentSlide = 0;
+
+    function nextSlide() {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }
+    setInterval(nextSlide, 6000);
+
+    // 2. Countdown Logic (Ziel: 15.09.2028, 11:00 Uhr)
+    const weddingDate = new Date('2028-09-15T11:00:00').getTime();
 
     function updateCountdown() {
       const now = new Date().getTime();
-      const difference = targetDate - now;
+      const distance = weddingDate - now;
 
-      if (difference <= 0) {
-        document.querySelector('.timer-display').innerHTML = "<h3>Das Event hat begonnen!</h3>";
+      if (distance < 0) {
+        document.getElementById('days').innerText = '00';
+        document.getElementById('hours').innerText = '00';
+        document.getElementById('minutes').innerText = '00';
+        document.getElementById('seconds').innerText = '00';
+        
+        document.getElementById('gallery-container').innerHTML = '<p>📸 Willkommen in der Fotogalerie! Hier könnt ihr eure Bilder hochladen und ansehen.</p>';
         return;
       }
 
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (10Da du keine spezifische Anforderung genannt hast, worum es in dem Code gehen soll, hier ist ein direkt kopierbares **Python-Script (Standard-Vorlage mit nützlichen Grundfunktionen)**:
 
-      document.getElementById('days').innerText = String(days).padStart(2, '0');
-      document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-      document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-      document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
-    }
+```python
+import sys
+import time
 
-    // Neuigkeiten ein-/ausklappen
-    function toggleNews() {
-      const newsBtn = document.getElementById('newsBtn');
-      const newsContent = document.getElementById('newsContent');
-      
-      const isOpen = newsContent.classList.toggle('open');
-      newsBtn.classList.toggle('active');
-      newsBtn.setAttribute('aria-expanded', isOpen);
-    }
+def main():
+    print("=== Start des Scripts ===")
+    
+    # Beispiel für eine Schleife
+    for i in range(1, 4):
+        print(f"Schritt {i} wird ausgeführt...")
+        time.sleep(0.5)
+        
+    print("=== Erfolgreich abgeschlossen! ===")
 
-    // Intervall starten
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-  </script>
-
-</body>
-</html>
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nProgramm vom Benutzer abgebrochen.")
+        sys.exit(0)
+		
